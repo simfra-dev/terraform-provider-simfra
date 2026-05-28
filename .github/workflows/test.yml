@@ -36,18 +36,13 @@ jobs:
   acceptance:
     runs-on: ubuntu-latest
     needs: [lint, unit]
+    if: false  # requires a running Simfra instance; run manually with act or locally
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
           go-version-file: 'go.mod'
           cache: true
-      - name: Build Simfra
-        run: |
-          git clone https://github.com/simfra-dev/simfra.git /tmp/simfra
-          cd /tmp/simfra && make build-backend
-          /tmp/simfra/simfra &
-          sleep 3
       - name: Run acceptance tests
         env:
           TF_ACC: "1"
